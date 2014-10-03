@@ -7,33 +7,31 @@ import functools, textwrap
 # function-passing gives me the result I want (behaves, memoizes, doesn't freak
 # out as a result of trying to serialize the parent class).
 
-class Mpg:
-	def trip_cost_memoizable():
-		@functools.lru_cache()
-		def trip_cost(v, c): return v * c
-		return trip_cost
-	def pergallon_memoizable():
-		@functools.lru_cache()
-		def pergallon(d, v): return d / v
-		return pergallon
-
 # Everybody gets their own private collection of memoized values upon class
 # instantiation.  Don't like it?  Too bad.
 class TripInfo(dict):
+	def __trip_cost_memoizable():
+		@functools.lru_cache()
+		def trip_cost(v, c): return v * c
+		return trip_cost
+	def __pergallon_memoizable():
+		@functools.lru_cache()
+		def pergallon(d, v): return d / v
+		return pergallon
 	def __init__(self, *args):
-		self.trip_cost = Mpg.trip_cost_memoizable()
-		self.pergallon = Mpg.pergallon_memoizable()
+		self.trip_cost = __trip_cost_memoizable()
+		self.pergallon = __pergallon_memoizable()
 		super().__init__(*args)
 
 	@property
-	def cost(self, volume = 0, cost = 0):
-		volume = (self.get('fuel_volume') or 0)
-		cost = (self.get('perunit_cost') or 0)
+	def cost(self, volume = None, cost = None):
+		volume or volume = (self.get('fuel_volume') or 0)
+		cost or cost = (self.get('perunit_cost') or 0)
 		return self.trip_cost(volume, cost)
 	@property
-	def mpg(self, distance = 0, volume = 0):
-		distance = (self.get('distance') or 0)
-		volume = (self.get('fuel_volume') or 0)
+	def mpg(self, distance = None, volume = None):
+		distance or distance = (self.get('distance') or 0)
+		volume or volume = (self.get('fuel_volume') or 0)
 		return self.pergallon(distance, volume)
 
 # Build up a dictionary again
