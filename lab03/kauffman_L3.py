@@ -6,7 +6,7 @@ import re
 
 dayschedules = {'wd': [7, 10], 'we': [10, None]}
 daykws = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa']
-daynames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+daynames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 dayregexps = []
 yesregexp = re.compile(".*yes.*", re.I) # Anything not yes is no, namsayin'?
 for regexpstr in [".*sunday.*", ".*monday.*", ".*tuesday.*", ".*wednesday.*", ".*thursday.*", ".*friday.*", ".*saturday.*", ".*sunday.*"]: dayregexps.append(re.compile(regexpstr, re.I)) # This is dumb, but doesn't do anything too untoward.
