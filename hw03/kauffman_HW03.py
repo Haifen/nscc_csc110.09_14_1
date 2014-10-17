@@ -18,7 +18,7 @@ for sizeinfo in cupinfo.values():
   sizeinfo['pricebreak']['predfn'] = functools.partial(bpred_mapping[sizeinfo['pricebreak']['predkey']], sizeinfo['pricebreak']['break_point'])
   sizeinfo['pricebreak']['opfn'] = functools.partial(bpricebreak_mapping[sizeinfo['pricebreak']['op']], sizeinfo['pricebreak']['co'])
 
-c_order_cups = {'total': int(input("How many cups of coffee?")), cupacc: 0, cup_bd: {}}
+c_order_cups = {'total': int(input("How many cups of coffee?: ")), cupacc: 0, cup_bd: {}}
 while(c_order_cups['cupacc'] < c_order_cups['total'])
   cupmatch = re.match(valid_cup_re, input("\n".join(textwrap("How many cups of a given size, with size indicated by 's', 'm', or 'l' (i.e. 12s)?:" 72))))
   if(cupmatch.get(2)):
@@ -37,9 +37,9 @@ for ccs in c_order_cups['cup_bd'].items():
   if(cupinfo.[ccs[0]].get('pricebreak') and cupinfo[ccs[0]]['pricebreak'].get('at') & 0b0111):
     if(cupinfo.get(ccs[0])['at'] & 0b0001):
       cupinfo[ccs[0]]['pricebreak']['predfn'](ccs[1]) and c_order_cups[ccs[0]]['total'] = cupinfo[ccs[0]]['cost'] * (ccs[1] - 1) + cupinfo[ccs[0]]['pricebreak']['opfn'](cupinfo[ccs[0]]['cost'])
-    if(cupinfo.get(ccs[0])['at'] & 0b0011):
+    if(cupinfo.get(ccs[0])['at'] & 0b0010):
       if(cupinfo[ccs[0]]['pricebreak']['at'] & 0b1000):
-        c_order_cups[ccs[0]]['total'] +=
+        c_order_cups[ccs[0]]['total'] += cupinfo[ccs[0]]['pricebreak']['opfn'](cupinfo[ccs[0]]['cost']) * (ccs[1] // cupinfo[ccs[0]]['pricebreak']['break_point']) + (cupinfo[ccs[0]]['cost'] * (ccs[1] - ccs[1] // cupinfo[ccs[0]]['pricebreak']['break_point'])
       cupinfo[ccs[0]]['pricebreak']['predfn'](ccs[1]) and c_order_cups[ccs[0]]['total'] += ((ccs[1] - cupinfo[ccs[0]]['pricebreak']['break_point'] + 1) * (cupinfo[ccs[0]]['pricebreak']['opfn'](cupinfo[ccs[0]]['cost']) + ((cupinfo[ccs[0]]['pricebreak']['break_point']) - 1) * cupinfo.get(ccs[0]['cost']))))
     cupinfo.get(ccs[0])['at'] & 0b0100 and cupinfo[ccs[0]]['pricebreak']['predfn'](ccs[1]) and c_order_cups[ccs[0]]['total'] += cupinfo[ccs[0]]['pricebreak']['opfn'](ccs[0]['cost']) * ccs[1]
 
