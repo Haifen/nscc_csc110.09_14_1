@@ -1,5 +1,7 @@
 #!/bin/env python
 
+# $Header: nscc_csc110_201409/lab04/kauffman_L4_2.py, r1 201410161828 US/Pacific-New PDT UTC-0700 robink@northseattle.edu Lab $
+
 ## Count the number of even integers given a series fed from stdin (should be a set, not a list)
 
 import functools, operator, re
@@ -12,7 +14,7 @@ odds = set()
 while(cont):
   s_entry = input("Please enter a number: ")
   s_match = i_no_regexp.match(s_entry)
-  if(s_match.group(2))
+  if(s_match.group(2)):
     print("Thank you, here is your tally:")
     iset_str = map(str, iset)
     print("Numbers entered:", ", ".join(iset_str))
