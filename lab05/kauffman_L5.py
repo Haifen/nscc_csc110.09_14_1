@@ -1,9 +1,9 @@
 #!/bin/env python
 
-# $Header: nscc_csc110_201409/lab05/kauffman_L5.py, r2 201410231852 US/Pacific-New PDT UTC-0700 robink@northseattle.edu Lab $
+# $Header: nscc_csc110_201409/lab05/kauffman_L5.py, r5 201410241440 US/Pacific-New PDT UTC-0700 robink@northseattle.edu Lab $
 ## Do a search for a series of numeric identities [1, 2, 3] in a list of ints (or instances of number-y things)
 
-import re
+import itertools, re
 
 ## Collect the series
 ## MSOI is acryonymized "My Series of Identities"
@@ -11,6 +11,7 @@ msoi = list()
 ## Assume anything the user enters may be cast as an int()
 ## Assume anything that's not [+-]?[0-9]+ is the user indicating they're done with text entry.
 validentry_re = re.compile("^([+-]?\d+)?(.+)?$", re.I)
+search_s = [1, 2, 3] # Let's actually define what we're searching for
 
 doneness_canary = False
 
@@ -24,22 +25,29 @@ while(doneness_canary == False):
 
 # Evil
 msoi_rds = msoi.__iter__()
+# Worse evil
+msoi_lm = msoi_rds.__next__()
 
-res_ind = int()
-matched = bool()
+match_indeces = list()
 
 if(len(msoi) < 3):
   print("Sorry, we cannot match against a series of length {}.\n".format(len(msoi)))
 else:
-  # Worse evil
+  # Even worse evil
   # This is not couched in a try: since hopefully we'll never call __next__() on the last element in the iterable list and hit StopIteration, but holy $&#* this is awful.
-  while(msoi_rds.__length_hint__() > 2):
-    if(msoi_rds.__next__() == 1 and msoi_rds.__next__() == 2 and msoi_rds.__next__() == 3):
-      res_ind = len(msoi) - 3 - msoi_rds.__length_hint__()
-      matched = True # Hooray, a "recursive descent" "iterator"  At least minimal persistent state plus some use of language primitives are in play.
+  while(msoi_rds.__length_hint__() > 1):
+    if(msoi_lm == search_s[0]):
+      for subsearch_ident in search_s[1:]:
+        msoi_lm = msoi_rds.__next__()
+        if(not msoi_lm == subsearch_ident): break
+      else:
+        match_indeces.append(len(msoi) - 3 - msoi_rds.__length_hint__())
+    else: msoi_lm = msoi_rds.__next__()
 
-if(matched):
-  print("Match found at index {0} (element of count {1} when counting from one)".format(res_ind, (res_ind + 1)))
+if(match_indeces): # Thank goodness for an empty list() evaluating as False
+  print("The following matches have been found:\n")
+  for ind in match_indeces:
+    print("Match found at index {0} (element #{1}) of parent series.".format(ind, ind + 1))
 else:
   print("Sorry, we couldn't find the sequence [1, 2, 3] in your series.")
 
