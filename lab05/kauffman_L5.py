@@ -3,7 +3,7 @@
 # $Header: nscc_csc110_201409/lab05/kauffman_L5.py, r5 201410241459 US/Pacific-New PDT UTC-0700 robink@northseattle.edu Lab $
 ## Do a search for a series of numeric identities [1, 2, 3] in a list of ints (or instances of number-y things)
 
-import itertools, re
+import re
 
 ## Collect the series
 ## MSOI is acryonymized "My Series of Identities"
