@@ -28,7 +28,7 @@ msoi_rds = msoi.__iter__()
 
 match_indeces = list()
 
-if(len(msoi) < 3):
+if(len(msoi) < len(search_s):
   print("Sorry, we cannot match against a series of length {}.\n".format(len(msoi)))
 else:
   # Worse evil
@@ -40,7 +40,7 @@ else:
         msoi_lm = msoi_rds.__next__()
         if(not msoi_lm == subsearch_ident): break
       else:
-        match_indeces.append(len(msoi) - 3 - msoi_rds.__length_hint__())
+        match_indeces.append(len(msoi) - len(search_s) - msoi_rds.__length_hint__())
     else: msoi_lm = msoi_rds.__next__()
 
 if(match_indeces): # Thank goodness for an empty list() evaluating as False
