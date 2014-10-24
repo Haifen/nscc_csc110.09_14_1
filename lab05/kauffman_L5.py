@@ -19,7 +19,7 @@ while(doneness_canary == False):
   if(inm.group(1)):
     msoi.append(int(inm.group(1)))
   else:
-    print("Thank you for your input!")
+    print("\n\nThank you for your input!\n")
     doneness_canary = True
 
 # Evil
