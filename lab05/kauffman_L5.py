@@ -33,7 +33,7 @@ if(len(msoi) < 3):
 else:
   # Worse evil
   # This is not couched in a try: since hopefully we'll never call __next__() on the last element in the iterable list and hit StopIteration, but holy $&#* this is awful.
-  while(msoi_rds.__length_hint__() > 3):
+  while(msoi_rds.__length_hint__() > 2):
     if(msoi_rds.__next__() == 1 and msoi_rds.__next__() == 2 and msoi_rds.__next__() == 3):
       res_ind = len(msoi) - 3 - msoi_rds.__length_hint__()
       matched = True # Hooray, a "recursive descent" "iterator"  At least minimal persistent state plus some use of language primitives are in play.
@@ -49,12 +49,5 @@ else:
   # What I ought to implement, given that this is Python, would be a "higher-order" function that returned some object implementing an iterable interface that stepped over its contents only returning the identity of an item in the list when it was a matching component of a series and only set a boolean attribute and a (list of) inde(ces|x) of the match(es) when the entire set was evaluated.  This has the rather glaring flaw of returning not only a value, but a value that evaluates to True when only a subset of a match series has been encountered.  Thus, while it would be kinda cool, the identities in an iterable wouldn't be an accurate representation of the ultimate endgame (the index or indeces of where in the original list the match(es) began).
   # Lastly, I wouldn't know how to force in the extra object attributes (did_match = bool(), match_indeces = list()) were my little iterable "collection" cast to a proper sequential Python type (list(), etc), so the information that someone making use of this instance would really care about (did we match?  Where did we match?  If we care about partial matches, how well did we match?) would be completely thrown away.
 
-  ## OK, it's time to make this a proper freaking function
+## This ultimately should be made a function that returns an implementation of the iterable interface which returns wrapped match identity objects implementing subclasses of whatever the identity's native type is with the .data ideally set to whatever it is for the original matching identity, so that we can add our own attributes about where it is within the original collection or its current match group.  This ends up plugging into anything that does type checking, and it'll probably go nuts.
 
-  def coll_search_ng(somecoll, sea_ser, *moreargs):
-    search_length = moreargs.get(0) and moreargs[0] < len(sea_ser) and int(moreargs[0]) or len(sea_ser)
-    colliter = iter(somecoll)
-    while(colliter.__length_hint__() > search_length):
-      match_canary = True
-      for ind in range(search_length):
-        colliter.__next__() == sea_ser[ind] and ind != 0 or match_canary = False
