@@ -48,3 +48,13 @@ else:
   # If I were doing this "functionally", my crude approach would be to try to implement a general-purpose "reduce-while" function that would not only take a closure, a collection and an optional initial value but would also allow whomever was calling it to throw in a predicate (bound function or lambda) that would tell it to give up when that block returned False.
   # What I ought to implement, given that this is Python, would be a "higher-order" function that returned some object implementing an iterable interface that stepped over its contents only returning the identity of an item in the list when it was a matching component of a series and only set a boolean attribute and a (list of) inde(ces|x) of the match(es) when the entire set was evaluated.  This has the rather glaring flaw of returning not only a value, but a value that evaluates to True when only a subset of a match series has been encountered.  Thus, while it would be kinda cool, the identities in an iterable wouldn't be an accurate representation of the ultimate endgame (the index or indeces of where in the original list the match(es) began).
   # Lastly, I wouldn't know how to force in the extra object attributes (did_match = bool(), match_indeces = list()) were my little iterable "collection" cast to a proper sequential Python type (list(), etc), so the information that someone making use of this instance would really care about (did we match?  Where did we match?  If we care about partial matches, how well did we match?) would be completely thrown away.
+
+  ## OK, it's time to make this a proper freaking function
+
+  def coll_search_ng(somecoll, sea_ser, *moreargs):
+    search_length = moreargs.get(0) and moreargs[0] < len(sea_ser) and int(moreargs[0]) or len(sea_ser)
+    colliter = iter(somecoll)
+    while(colliter.__length_hint__() > search_length):
+      match_canary = True
+      for ind in range(search_length):
+        colliter.__next__() == sea_ser[ind] and ind != 0 or match_canary = False
