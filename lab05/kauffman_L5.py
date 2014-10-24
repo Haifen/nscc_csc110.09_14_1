@@ -1,6 +1,6 @@
 #!/bin/env python
 
-# $Header: nscc_csc110_201409/lab05/kauffman_L5.py, r5 201410241440 US/Pacific-New PDT UTC-0700 robink@northseattle.edu Lab $
+# $Header: nscc_csc110_201409/lab05/kauffman_L5.py, r5 201410241459 US/Pacific-New PDT UTC-0700 robink@northseattle.edu Lab $
 ## Do a search for a series of numeric identities [1, 2, 3] in a list of ints (or instances of number-y things)
 
 import itertools, re
@@ -25,17 +25,16 @@ while(doneness_canary == False):
 
 # Evil
 msoi_rds = msoi.__iter__()
-# Worse evil
-msoi_lm = msoi_rds.__next__()
 
 match_indeces = list()
 
 if(len(msoi) < 3):
   print("Sorry, we cannot match against a series of length {}.\n".format(len(msoi)))
 else:
-  # Even worse evil
+  # Worse evil
   # This is not couched in a try: since hopefully we'll never call __next__() on the last element in the iterable list and hit StopIteration, but holy $&#* this is awful.
-  while(msoi_rds.__length_hint__() > 1):
+  msoi_lm = msoi_rds.__next__() # Oh god why
+  while(msoi_rds.__length_hint__() > (len(search_s) - 2)):
     if(msoi_lm == search_s[0]):
       for subsearch_ident in search_s[1:]:
         msoi_lm = msoi_rds.__next__()
