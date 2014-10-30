@@ -28,7 +28,7 @@ msoi_rds = msoi.__iter__()
 
 match_indeces = list()
 
-if(len(msoi) < len(search_s):
+if(len(msoi) < len(search_s)):
   print("Sorry, we cannot match against a series of length {}.\n".format(len(msoi)))
 else:
   # Worse evil
