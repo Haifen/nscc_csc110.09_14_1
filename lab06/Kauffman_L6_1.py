@@ -1,16 +1,16 @@
 #!/bin/env python
 
-# $Header: nscc_csc110.09_14_1/lab06/Kauffman_L6_1.py, r4 201411061724 US/Pacific-New PST UTC-0800 robink@northseattle.edu Lab $
+# $Header: nscc_csc110.09_14_1/lab06/Kauffman_L6_1.py, r5 201411061840 US/Pacific-New PST UTC-0800 robink@northseattle.edu Lab $
 # Lab 3 starter code
 
 
 # CSC 110
 
-import functools, math, re, textwrap # Why have we imported the math module?
+import functools, math, re, textwrap
 
 def main():
   print("This program is to test functions")
-    
+
   ar_tr_tc = [[4, 5, 8], [2, 7, 9]]
   print("Testing areaTrapezoid...")
   for ar_tr_arg in ar_tr_tc:
@@ -21,11 +21,13 @@ def main():
   # put your function calls here
   coord_pair = [3, 5]
 
-  if(re.match(yesno, input("\n".join(textwrap.wrap("Would you like to enter a set of base linear dimensions for the trangle, or would you prefer to stick with the internal constants (Y to enter 90º dimensions, N to stick with constants) (Y/N): ", 72)))).group(1)):
+  if(re.match(yesno, input("\n".join(textwrap.wrap("Would you like to enter a set of base linear dimensions for the right trangle, or would you prefer to stick with the internal constants (Y to enter 90º dimensions, N to stick with constants) (Y/N): ", 72)))).group(1)):
     coord_pair[0] = float(input("Please enter the width of the triangle: "))
     coord_pair[1] = (float(input("Please enter the height of the triangle: ")))
-  ud_tr_result = areaTriangle(*coord_pair)
-  print("\n".join(textwrap.wrap("For a triangle of width {1} and height {2}, the area is {0}".format(ud_tr_result, *coord_pair))))
+  ud_tr_result = hypRtTriangle(*coord_pair)
+  print("\n".join(textwrap.wrap("For a right triangle of width {1} and height {2}, the hypotenuse is {0}".format(ud_tr_result, *coord_pair))))
+  ichr = input("Please enter a single character: ")[0]
+  print("Your character ({0}), {1} contain a vowel.".format(ichr, vowelcheck(ichr) and "does" or "does not"))
 
 # This function calculates and returns the area of a trapezoid
 # parameter: base1, the length of the top of the trapezoid
@@ -39,7 +41,14 @@ def areaTrapezoid(base1, base2, height):
 
     return area
 
-def areaTriangle(width, height):
+def areaTriangle(width, height): # This wasn't necessary (I didn't read the lab assignment spec closely enough)
   return width * height / 2.0
+
+def hypRtTriangle(width, height): return math.sqrt(width ** 2 + height ** 2)
+
+vowel_set = {'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'} # Could be a list, but this prevents duplicate values if we try to assoc more stuff in
+vowel_re = re.compile("([AEIOUaeiou])") # This isn't necessary, but is another way to do things.
+vowelcheck = (lambda charcoll, matchset = vowel_set: charcoll[0] in matchset)
+# vowelcheck = (lambda charcoll, matchre = vowel_re: re.match(vowel.re, charcoll) and True or False)
 
 main()
