@@ -1,20 +1,23 @@
+#!/bin/env python
+
+# $Header: nscc_csc110.09_14_1/lab06/Kauffman_L6_1.py, r3 201411061704 US/Pacific-New PST UTC-0800 robink@northseattle.edu Lab $
 # Lab 3 starter code
 
 
 # CSC 110
 
-import math, re, textwrap
+import functools, math, re, textwrap # Why have we imported the math module?
 
 def main():
   print("This program is to test functions")
     
   ar_tr_tc = [[4, 5, 8], [2, 7, 9]]
   print("Testing areaTrapezoid...")
-  for arguments in ar_tr_tc:
-     print("\n\nFunction inputs and outputs:\n\nBase1\t\tBase2\t\tHeight\t\tArea (computed)\n{1}\t\t{2}\t\t{3}\t\t{0}".format(areaTrapezoid(*arguments), *arguments))
+  for ar_tr_arg in ar_tr_tc:
+     print("\n\nFunction inputs and outputs:\n\nBase1\t\tBase2\t\tHeight\t\tArea (computed)\n{1}\t\t{2}\t\t{3}\t\t{0}".format(areaTrapezoid(*ar_tr_arg), *ar_tr_arg))
 
 
-  yesno = re.compile("^.*(y)?.*$")
+  yesno = re.compile("^.*([Yy])?.*$")
   # put your function calls here
   coord_pair = [3, 5]
 
