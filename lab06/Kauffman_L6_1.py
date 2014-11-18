@@ -17,7 +17,7 @@ def main():
      print("\n\nFunction inputs and outputs:\n\nBase1\t\tBase2\t\tHeight\t\tArea (computed)\n{1}\t\t{2}\t\t{3}\t\t{0}".format(areaTrapezoid(*ar_tr_arg), *ar_tr_arg))
 
 
-  yesno = re.compile("^.*([Yy]).*$")
+  yesno = re.compile("^.*([Yy])?.*$")
   # put your function calls here
   coord_pair = [3, 5]
 
@@ -46,9 +46,11 @@ def areaTriangle(width, height): # This wasn't necessary (I didn't read the lab 
 
 def hypRtTriangle(width, height): return math.sqrt(width ** 2 + height ** 2)
 
+def vowelcheck(charcoll, matchset = {'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'}): return charcoll[0] in matchset
 vowel_set = {'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'} # Could be a list, but this prevents duplicate values if we try to assoc more stuff in
 vowel_re = re.compile("([AEIOUaeiou])") # This isn't necessary, but is another way to do things.
-vowelcheck = (lambda charcoll, matchset = vowel_set: charcoll[0] in matchset)
-# vowelcheck = (lambda charcoll, matchre = vowel_re: re.match(vowel.re, charcoll) and True or False)
+vowelcheck_greek = (lambda charcoll, matchset = vowel_set: charcoll[0] in matchset)
+def vowelcheck_re(charcoll, matchre = re.compile("([AEIOUaeiou])")): return re.match(vowel.re, charcoll) and True or False
+vowelcheck_re_greek = (lambda charcoll, matchre = vowel_re: re.match(vowel.re, charcoll) and True or False)
 
 main()
