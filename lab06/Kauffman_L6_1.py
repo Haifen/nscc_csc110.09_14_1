@@ -47,10 +47,8 @@ def areaTriangle(width, height): # This wasn't necessary (I didn't read the lab 
 def hypRtTriangle(width, height): return math.sqrt(width ** 2 + height ** 2)
 
 def vowelcheck(charcoll, matchset = {'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'}): return charcoll[0] in matchset
-vowel_set = {'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'} # Could be a list, but this prevents duplicate values if we try to assoc more stuff in
-vowel_re = re.compile("([AEIOUaeiou])") # This isn't necessary, but is another way to do things.
-vowelcheck_greek = (lambda charcoll, matchset = vowel_set: charcoll[0] in matchset)
+vowelcheck_greek = (lambda charcoll, matchset = {'A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'}: charcoll[0] in matchset)
 def vowelcheck_re(charcoll, matchre = re.compile("([AEIOUaeiou])")): return re.match(vowel.re, charcoll) and True or False
-vowelcheck_re_greek = (lambda charcoll, matchre = vowel_re: re.match(vowel.re, charcoll) and True or False)
+vowelcheck_re_greek = (lambda charcoll, matchre = re.compile("([AEIOUaeiou])"): re.match(vowel.re, charcoll) and True or False)
 
 main()
