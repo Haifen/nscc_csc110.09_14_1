@@ -1,7 +1,23 @@
 #!/bin/env python
-# $Header: nscc_csc110.09_14_1/lab07/Kauffman_L7.py, r4 201411210047 US/Pacific-New PST UTC-0800 robink@northseattle.edu Lab $
+# $Header: nscc_csc110.09_14_1/lab07/Kauffman_L7.py, r4 201411210117 US/Pacific-New PST UTC-0800 robink@northseattle.edu Lab $
 
-import functools, operator, textwrap
+import functools, operator, os, sys, textwrap
+
+inp_filename = "numbers.txt"
+if(len(sys.argv) >= 2):
+  inp_filename = sys.argv[1]
+
+mean = float()
+if(os.access(inp_filename, os.R_OK)):
+  inp_file = open(inp_filename, "rt")
+  acc = float()
+  lc = int()
+  for t_ln in inp_file:
+    lc += 1
+    acc += float(t_ln)
+  else:
+    mean = acc / lc
+  if(mean.is_integer): mean = int(mean)
 
 def has_repeating_members(coll, myident = 3, num = 2):
   try:
@@ -60,4 +76,5 @@ series_to_filter = [1, 7, 2, 6, 7, 6, 6, 8, 10, 7, 6, 1, 6]
 subseries = [6, 7]
 do_these_have_two_threes = has_repeating_members(repeating_identity_series, 3, 2)
 series_acc = apply_op(operator.add, filter_series(series_to_filter, subseries))
+print("The sum of the numbers in {0} is {1}".format(inp_filename, mean))
 print("The sum of the series:\n{0}\nwithout [6, 7] in the series is:\n{1}\nThe series {2} {3} contain a repeating number 3.".format(series_to_filter, series_acc, repeating_identity_series, do_these_have_two_threes and "does" or "does not"))
