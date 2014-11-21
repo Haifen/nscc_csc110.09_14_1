@@ -1,7 +1,8 @@
 #!/bin/env python
-# $Header: nscc_csc110.09_14_1/lab07/Kauffman_L7.py, r5 201411210128 US/Pacific-New PST UTC-0800 robink@northseattle.edu Lab $
+# $Header: nscc_csc110.09_14_1/lab07/Kauffman_L7.py, r6 201411210131 US/Pacific-New PST UTC-0800 robink@northseattle.edu Lab $
 
-import functools, operator, os, sys, textwrap
+import operator, os, sys, textwrap
+from functools import reduce
 
 inp_filename = "numbers.txt"
 if(len(sys.argv) >= 2):
@@ -67,14 +68,11 @@ def filter_series(series, search_series = [6, 7]):
   else:
     return myseries
 
-apply_op = functools.reduce
-
-
 
 repeating_identity_series = [1, 2, 3, 3, 4]
 series_to_filter = [1, 7, 2, 6, 7, 6, 6, 8, 10, 7, 6, 1, 6]
 subseries = [6, 7]
 do_these_have_two_threes = has_repeating_members(repeating_identity_series, 3, 2)
-series_acc = apply_op(operator.add, filter_series(series_to_filter, subseries))
+series_acc = reduce(operator.add, filter_series(series_to_filter, subseries))
 print("The sum of the numbers in {0} is {1}".format(inp_filename, mean))
 print("The sum of the series:\n{0}\nwithout [6, 7] in the series is:\n{1}\nThe series {2} {3} contain a repeating number 3.".format(series_to_filter, series_acc, repeating_identity_series, do_these_have_two_threes and "does" or "does not"))
