@@ -1,53 +1,63 @@
 #!/bin/env python
-# $Header: nscc_csc110.09_14_1/lab07/Kauffman_L7.py, r1 201411201644 US/Pacific-New PST UTC-0800 robink@northseattle.edu Lab $
+# $Header: nscc_csc110.09_14_1/lab07/Kauffman_L7.py, r4 201411210047 US/Pacific-New PST UTC-0800 robink@northseattle.edu Lab $
 
-import functools, operator
-
-search_series = [6, 7]
-search_series_iter = iter(search_series) # Calling __iter__() on an iterator returns self, but calling the same on a collections.abc.Sequence tends to return a new collections.abc.Iterator.  We take advantage of that.
-
-rep_sampleseries = [1, 2, 3, 3]
-sampleseries = [1, 2, 3, 4, 5, 6, 7, 8, 6, 7, 8, 6, 8]
-sampleseries_filtered = sampleseries.copy()
-cur_ind = int()
-match_ind = int()
-matches = list()
+import functools, operator, textwrap
 
 def has_repeating_members(coll, myident = 3, num = 2):
-  startindex = coll.index(myident)
-  if(startindex):
-    subsearch = iter(coll[startindex:])
-    if(operator.length_hint(subsearch) >=num):
-      for ign_count in range(num - 1):
-        if(next(subsearch) == myident): None
-        else: break
-      else: True
-
-for match_max in range(len(sampleseries_filtered) - (len(sampleseries_filtered) % operator.length_hint(search_series))):
   try:
-    print(cur_ind, len(search_series), operator.length_hint(search_series_iter))
-    if(cur_ind > (len(sampleseries_filtered) - operator.length_hint(search_series_iter))):
-      break
-    if(operator.length_hint(search_series_iter) > 0):
-      if(operator.length_hint(search_series_iter) == len(search_series)):
-        cur_ind = sampleseries_filtered.index(next(search_series_iter), cur_ind)
-      elif(next(search_series_iter) == sampleseries_filtered[cur_ind + 1]): cur_ind += 1
-      else:
-        search_series_iter = iter(search_series)
-    else:
-      cur_ind and matches.append(cur_ind + 1 - len(search_series))
-      cur_ind += 1
-      search_series_iter = iter(search_series)
+    startindex = coll.index(myident) + 1
+    if(startindex):
+      subsearch = iter(coll[startindex:])
+      if(operator.length_hint(subsearch) >= num - 1):
+        for ign_count in range(num - 1):
+          if(next(subsearch) != myident):
+            break
+        else:
+          return True
+    else: return False
   except ValueError:
-    print(cur_ind)
-    cur_ind = len(search_series) - 1 # If collections.Sequence.index() fails to find an identity, it will always fail to find an identity.  Get out of this mess before we end up trying to find the same value in our (sub)set of remaining search space.
+    startindex = None
+  return False
+
+def find_sub_in_series_greedy(series = [1, 2, 3, 4, 5, 6, 7, 8, 6, 7, 8, 6, 8], search_series = [6, 7]):
+  search_series_iter = iter(search_series) # Calling __iter__() on an iterator returns self, but calling the same on a collections.abc.Sequence tends to return a new collections.abc.Iterator.  We take advantage of that.
+  cur_ind = int()
+  matches = list()
+  for match_max in range(len(series) - (len(series) % operator.length_hint(search_series))):
+    try:
+      if(cur_ind > (len(series) - operator.length_hint(search_series_iter))):
+        break
+      if(operator.length_hint(search_series_iter) > 0):
+        if(operator.length_hint(search_series_iter) == len(search_series)):
+          cur_ind = series.index(next(search_series_iter), cur_ind)
+        elif(next(search_series_iter) == series[cur_ind + 1]): cur_ind += 1
+        else:
+          search_series_iter = iter(search_series)
+      else:
+        cur_ind += 1
+        matches.append(cur_ind - len(search_series))
+        search_series_iter = iter(search_series)
+    except ValueError:
+      cur_ind = len(search_series) - 1 # If collections.Sequence.index() fails to find an identity, it will always fail to find an identity.  Get out of this mess before we end up trying to find the same value in our (sub)set of remaining search space.
+  return matches
+
+def filter_series(series, search_series = [6, 7]):
+  myseries = series.copy()
+  matches_tofilter = find_sub_in_series_greedy(myseries, search_series)
+  matches_tofilter.sort() # Match results should nominally be in ascending order already, but just in case...
+  matches_tofilter.reverse() # I imagine things would get messy if I tried to pop using indeces in ascending order
+  for match in matches_tofilter:
+    del myseries[match:(match + len(search_series))]
+  else:
+    return myseries
+
+def apply_op(opfn, coll): return functools.reduce(opfn, coll)
 
 
-print(has_repeating_members(rep_sampleseries))
-matches.reverse() # I imagine things would get messy if I tried to pop using indeces in ascending order
-print(matches)
-for match in matches:
-  del sampleseries_filtered[match:(match + len(search_series))]
-print(sampleseries_filtered)
-sum = functools.reduce(operator.add, sampleseries_filtered)
-print(sum)
+
+repeating_identity_series = [1, 2, 3, 3, 4]
+series_to_filter = [1, 7, 2, 6, 7, 6, 6, 8, 10, 7, 6, 1, 6]
+subseries = [6, 7]
+do_these_have_two_threes = has_repeating_members(repeating_identity_series, 3, 2)
+series_acc = apply_op(operator.add, filter_series(series_to_filter, subseries))
+print("The sum of the series:\n{0}\nwithout [6, 7] in the series is:\n{1}\nThe series {2} {3} contain a repeating number 3.".format(series_to_filter, series_acc, repeating_identity_series, do_these_have_two_threes and "does" or "does not"))
