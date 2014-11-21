@@ -1,5 +1,5 @@
 #!/bin/env python
-# $Header: nscc_csc110.09_14_1/lab07/Kauffman_L7.py, r4 201411210117 US/Pacific-New PST UTC-0800 robink@northseattle.edu Lab $
+# $Header: nscc_csc110.09_14_1/lab07/Kauffman_L7.py, r5 201411210128 US/Pacific-New PST UTC-0800 robink@northseattle.edu Lab $
 
 import functools, operator, os, sys, textwrap
 
@@ -67,7 +67,7 @@ def filter_series(series, search_series = [6, 7]):
   else:
     return myseries
 
-def apply_op(opfn, coll): return functools.reduce(opfn, coll)
+apply_op = functools.reduce
 
 
 
